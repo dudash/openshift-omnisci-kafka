@@ -60,14 +60,11 @@ First, we install a custom Kafka Connect service using Strimzi:
 * `oc apply -f https://raw.githubusercontent.com/dudash/openshift-omnisci-kafka/master/omnisci-kafka-connect.yaml`
 * `CONNECT_URL = $(oc get route omnisci-kafka-connect -n kafka --template={{.spec.host}})`
 
-Next, install the OmniSci Sink connector using the Strimzi instructions (this part is a little tricky):
-* https://strimzi.io/docs/latest/#using-kafka-connect-with-plug-ins-str
-
-([Here is a tutorial](8) on how to do this with Debezium)
-(Alternatively you might be able to use [confluent instructions](9), but I haven't tried)
+*Note that you can further customize the Kafka Connect image to add more connectors. Use the [Strimzi instructions here](10) (doing this is a little tricky, [but this is a good tutorial](8) on how to do it). Alternatively, you might be able to use [Confluent instructions](9), but I haven't tried*
 
 Finally, configure and create an instance of the OmniSci Sink connector by:
-* `curl https://raw.githubusercontent.com/dudash/openshift-omnisci-kafka/master/README.md -o omnisci-sink-connector.json`
+* `curl https://raw.githubusercontent.com/dudash/openshift-omnisci-kafka/master/omnisci-sink-connector.json -o omnisci-sink-connector.json`
+* customize the `omnisci-sink-connector.json` if needed
 * `curl -X POST -d @omnisci-sink-connector.json http://XXXXX:8083/connectors -H "Content-Type: application/json"`
 
 ### Login to the OmniSci UI
@@ -96,3 +93,4 @@ Now look at the OmniSci web page and... TODO
 [7]: https://www.omnisci.com/platform/downloads/enterprise
 [8]: https://medium.com/@sincysebastian/setup-kafka-with-debezium-using-strimzi-in-kubernetes-efd494642585
 [9]: https://docs.confluent.io/current/connect/kafka-connect-omnisci/index.html#
+[10]: https://strimzi.io/docs/latest/#using-kafka-connect-with-plug-ins-str
