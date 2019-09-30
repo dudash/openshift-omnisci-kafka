@@ -23,7 +23,9 @@ If you don't, you can setup a cluster on-prem or in the cloud by [following inst
 
 ## How to run this demo (the easy way)
 *COMING SOON - FOR NOW, GO THE LONG WAY*
+
 Clone this repo with: `git clone https://github.com/dudash/openshift-omnisci-kafka.git`
+
 Run the setup script: `./openshift-omnisci-kafka/easy_setup.sh`
 
 ## How to run this demo (the long way)
