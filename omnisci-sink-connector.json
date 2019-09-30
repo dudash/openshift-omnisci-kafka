@@ -1,0 +1,16 @@
+{
+    "name": "OmnisciSinkConnector",
+    "config": {
+        "connector.class": "io.confluent.connect.omnisci.OmnisciSinkConnector",
+        "tasks.max": "1",
+        "topics": "orders",
+        "connection.database": "omnisci",
+        "connection.port": "6274",
+        "connection.host": "localhost",
+        "connection.user": "admin",
+        "connection.password": "HyperInteractive",
+        "confluent.topic.bootstrap.servers": "localhost:9092",
+        "confluent.topic.replication.factor": "1",
+        "auto.create": "true"
+    }
+}
