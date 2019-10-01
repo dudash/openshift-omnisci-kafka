@@ -3,13 +3,13 @@
     "config": {
         "connector.class": "io.confluent.connect.omnisci.OmnisciSinkConnector",
         "tasks.max": "1",
-        "topics": "orders",
+        "topics": "ships_ais",
         "connection.database": "omnisci",
         "connection.port": "6274",
         "connection.host": "localhost",
         "connection.user": "admin",
         "connection.password": "HyperInteractive",
-        "confluent.topic.bootstrap.servers": "localhost:9092",
+        "confluent.topic.bootstrap.servers": "demo-cluster-kafka-bootstrap:9093",
         "confluent.topic.replication.factor": "1",
         "auto.create": "true"
     }
