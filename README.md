@@ -79,7 +79,7 @@ And paste in your license key.
 
 ### Let's send some test data with a tool called kafkacat
 We are going to dump some Kafka `ships_ais` topics on to the Kafka bus for OmniSci:
-* `kafkacat xxx`
+* `kafkacat -b localhost:9092 -t ships_ais -P -l ais-topics-85kdump.raw`
 
 Now look at the OmniSci web page and navigate to the Data Manager tab. You should see data coming for the `ships_ais` topic we've been dumping in to Kakfa.
 
