@@ -58,14 +58,15 @@ Kafka Connect is a tool for streaming data between Apache Kafka and external sys
 First, we install a custom Kafka Connect service using Strimzi:
 * `oc project kafka`
 * `oc apply -f https://raw.githubusercontent.com/dudash/openshift-omnisci-kafka/master/omnisci-kafka-connect.yaml`
-* `CONNECT_URL = $(oc get route omnisci-kafka-connect -n kafka --template={{.spec.host}})`
+* `oc expose svc/demo-kc-connect-api --name=connect-rest-service`
+* `CONNECT_URL = $(oc get route connect-rest-service -n kafka --template={{.spec.host}})`
 
 *Note that you can further customize the Kafka Connect image to add more connectors. Use the [Strimzi instructions here](10) (doing this is a little tricky, [but this is a good tutorial](8) on how to do it). Alternatively, you might be able to use [Confluent instructions](9), but I haven't tried*
 
 Finally, configure and create an instance of the OmniSci Sink connector by:
 * `curl https://raw.githubusercontent.com/dudash/openshift-omnisci-kafka/master/omnisci-sink-connector.json -o omnisci-sink-connector.json`
 * customize the `omnisci-sink-connector.json` if needed
-* `curl -X POST -d @omnisci-sink-connector.json http://XXXXX:8083/connectors -H "Content-Type: application/json"`
+* `curl -X POST -d @omnisci-sink-connector.json $CONNECT_URL/connectors -H "Content-Type: application/json"`
 
 ### Login to the OmniSci UI
 Open the route you exposed in the prior steps in a web browser. Let's make sure we can login. (You'll need your license key now if you are using Omnisci EE). If you forgot where it is, check the webconsole for exposed routes or run `oc get routes -n omnisci`.
@@ -76,13 +77,19 @@ Open the route you exposed in the prior steps in a web browser. Let's make sure 
 
 And paste in your license key.
 
-Let's create a dashboard...TODO
-
 ### Let's send some test data with a tool called kafkacat
-We are going to dump some Kafka messages on to the bus for OmniSci to visualize:
+We are going to dump some Kafka `ships_ais` topics on to the Kafka bus for OmniSci:
 * `kafkacat xxx`
 
-Now look at the OmniSci web page and... TODO
+Now look at the OmniSci web page and navigate to the Data Manager tab. You should see data coming for the `ships_ais` topic we've been dumping in to Kakfa.
+
+### Let's visualize some data
+
+Let's create a dashboard. First, we need to download the dashboard file by:
+* `curl https://raw.githubusercontent.com/dudash/openshift-omnisci-kafka/master/ais-dashboard.json -o ais-dashboard.json`
+
+On the Dashboards tab, click the Import button (top right - looks like a down arrow). And select the `ais-dashboard.json` file. We should now be able to see our AIS transmissions on a nice visual dashboard.
+
 
 [1]: https://www.openshift.com/learn/what-is-openshift
 [2]: https://try.openshift.com/
