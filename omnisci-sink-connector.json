@@ -3,7 +3,7 @@
     "config": {
         "connector.class": "io.confluent.connect.omnisci.OmnisciSinkConnector",
         "tasks.max": "1",
-        "topics": "ships_ais",
+        "topics": "ships_ais, ships_path",
         "connection.database": "omnisci",
         "connection.port": "6274",
         "connection.host": "localhost",
