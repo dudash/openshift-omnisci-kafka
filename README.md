@@ -1,3 +1,4 @@
+[![OpenShift Version][openshift311-logo]][openshift311-url]
 [![OpenShift Version][openshift41-logo]][openshift41-url]
 
 # OmniSci + Kafka Demo 
