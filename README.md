@@ -15,12 +15,12 @@ Kafka aims to provide a unified, high-throughput, low-latency platform for handl
 
 ## What is OpenShift?
 OpenShift is a leading hybrid cloud, enterprise Kubernetes application platform, trusted by 1000+ organizations. Find out more here:
-[https://www.openshift.com/learn/what-is-openshift](1)
+[https://www.openshift.com/learn/what-is-openshift][1]
 
 We're using OpenShift as a platform to run the UI, the database, and all the components of the messaging in containers - and to keep everything alive, map persistent storage, and load balance traffic.
 
 ### I assume you have OpenShift
-If you don't, you can setup a cluster on-prem or in the cloud by [following instructions here](2). Or if you have a beefy machine, you can try using a single-node installation with [CodeReady Containers](3).
+If you don't, you can setup a cluster on-prem or in the cloud by [following instructions here][2]. Or if you have a beefy machine, you can try using a single-node installation with [CodeReady Containers][3].
 
 ## How to run this demo (the easy way)
 *COMING SOON - FOR NOW, GO THE LONG WAY*
@@ -32,14 +32,14 @@ Run the setup script: `./openshift-omnisci-kafka/easy_setup.sh`
 ## How to run this demo (the long way)
 
 ### Install Kafka using Red Hat's Strimzi
-[Strimzi](4) uses k8s operators to make installing a Kafka cluster on OpenShift super easy. I'm going to explain the CLI steps, but feel free to just use the web console if that's your preference. You have to be a cluster-admin to do these steps.
+[Strimzi][4] uses k8s operators to make installing a Kafka cluster on OpenShift super easy. I'm going to explain the CLI steps, but feel free to just use the web console if that's your preference. You have to be a cluster-admin to do these steps.
 
 * `oc new-project kafka`
 * `curl -L https://github.com/strimzi/strimzi-kafka-operator/releases/download/0.13.0/strimzi-cluster-operator-0.13.0.yaml | sed 's/namespace: .*/namespace: kafka/' | oc apply -f - -n kafka`
 * `oc apply -f https://raw.githubusercontent.com/dudash/openshift-omnisci-kafka/master/omnisci-kafka-persistent.yaml -n kafka`
 
 ### Install OmniSci from their dockerhub images
-Omnisci keeps the EE version of their product [on dockerhub here](5). You need to [request a trial key](7) to use it. Alternatively, you can try the [community version](6) - but I haven't so YMMV.
+Omnisci keeps the EE version of their product [on dockerhub here][5]. You need to [request a trial key][7] to use it. Alternatively, you can try the [community version][6] - but I haven't so YMMV.
 
 Create a project to isolate this:
 * `oc new-project omnisci`
@@ -60,13 +60,15 @@ First, we install a custom Kafka Connect service using Strimzi:
 * `oc project kafka`
 * `oc apply -f https://raw.githubusercontent.com/dudash/openshift-omnisci-kafka/master/omnisci-kafka-connect.yaml`
 * `oc expose svc/demo-kc-connect-api --name=connect-rest-service`
-* `CONNECT_URL = $(oc get route connect-rest-service -n kafka --template={{.spec.host}})`
+* `CONNECT_URL=$(oc get route connect-rest-service -n kafka --template={{.spec.host}})`
 
-*Note that you can further customize the Kafka Connect image to add more connectors. Use the [Strimzi instructions here](10) (doing this is a little tricky, [but this is a good tutorial](8) on how to do it). Alternatively, you might be able to use [Confluent instructions](9), but I haven't tried*
+*Note that you can further customize the Kafka Connect image to add more connectors. Use the [Strimzi instructions here][10] (doing this is a little tricky, [but this is a good tutorial][8] on how to do it). Alternatively, you might be able to use [Confluent instructions][9], but I haven't tried*
 
 Finally, configure and create an instance of the OmniSci Sink connector by:
 * `curl https://raw.githubusercontent.com/dudash/openshift-omnisci-kafka/master/omnisci-sink-connector.json -o omnisci-sink-connector.json`
-* customize the `omnisci-sink-connector.json` if needed
+* edit the `omnisci-sink-connector.json`
+  * you need to set `connection.host` to the route for omnisci
+  * as desired add additional topics to watch in the `topics` list
 * `curl -X POST -d @omnisci-sink-connector.json $CONNECT_URL/connectors -H "Content-Type: application/json"`
 
 ### Login to the OmniSci UI
