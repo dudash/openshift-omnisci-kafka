@@ -48,7 +48,7 @@ Load image from dockerhub (omnisci/omnisci-ee-cpu):
 * `oc new-app omnisci/omnisci-ee-cpu --name omnisci`
 
 Add storage for omnisci to use:
-* `oc set volume dc/omnisci --add --name=mystor --mount-path=/omnisci-storage`
+* `oc set volume dc/omnisci --add --name omniscivol --claim-class glusterfs-storage --claim-size 1Gi --mount-path /omnisci-storage`
 
 Expose a route to this service so we can get them via a web browser.
 * `oc expose svc/omnisci`
