@@ -1,5 +1,5 @@
 {
-    "name": "OmnisciSinkConnector",
+    "name": "omnisci-sink",
     "config": {
         "connector.class": "io.confluent.connect.omnisci.OmnisciSinkConnector",
         "tasks.max": "1",

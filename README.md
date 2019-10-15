@@ -62,14 +62,14 @@ First, we install a custom Kafka Connect service using Strimzi:
 * `oc expose svc/demo-kc-connect-api --name=connect-rest-service`
 * `CONNECT_URL=$(oc get route connect-rest-service -n kafka --template={{.spec.host}})`
 
-*Note that you can further customize the Kafka Connect image to add more connectors. Use the [Strimzi instructions here][10] (doing this is a little tricky, [but this is a good tutorial][8] on how to do it). Alternatively, you might be able to use [Confluent instructions][9], but I haven't tried*
+*Note that you can further customize the Kafka Connect image to add more connectors. Use the [Strimzi instructions here][10] (doing this is a little tricky, [but this is a good tutorial][8] on how to do it).*
 
-Finally, configure and create an instance of the OmniSci Sink connector by:
-* `curl https://raw.githubusercontent.com/dudash/openshift-omnisci-kafka/master/omnisci-sink-connector.json -o omnisci-sink-connector.json`
-* edit the `omnisci-sink-connector.json`
+Finally, configure and create an instance of the Sink connector by:
+* `curl https://raw.githubusercontent.com/dudash/openshift-omnisci-kafka/master/connector-sink-omnisci.json -o connector-sink-omnisci.json`
+* edit the `connector-sink-omnisci.json`
   * you need to set `connection.host` to the route for omnisci
   * as desired add additional topics to watch in the `topics` list
-* `curl -X POST -d @omnisci-sink-connector.json $CONNECT_URL/connectors -H "Content-Type: application/json"`
+* `curl -X POST -d @connector-sink-omnisci.json $CONNECT_URL/connectors -H "Content-Type: application/json"`
 
 ### Login to the OmniSci UI
 Open the route you exposed in the prior steps in a web browser. Let's make sure we can login. (You'll need your license key now if you are using Omnisci EE). If you forgot where it is, check the webconsole for exposed routes or run `oc get routes -n omnisci`.
@@ -105,6 +105,7 @@ On the Dashboards tab, click the Import button (top right - looks like a down ar
 [8]: https://medium.com/@sincysebastian/setup-kafka-with-debezium-using-strimzi-in-kubernetes-efd494642585
 [9]: https://docs.confluent.io/current/connect/kafka-connect-omnisci/index.html#
 [10]: https://strimzi.io/docs/latest/#using-kafka-connect-with-plug-ins-str
+[11]: https://docs.confluent.io/5.3.1/connect/kafka-connect-jdbc/sink-connector/index.html
 
 ---
 

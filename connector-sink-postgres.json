@@ -1,0 +1,15 @@
+{
+    "name": "jdbc-sink",
+    "config": {
+      "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+      "tasks.max": "1",
+      "topics": "ships_ais, ships_path",
+      "connection.url": "jdbc:postgresql://localhost:6274/omnisci",
+      "connection.user": "admin",
+      "connection.password": "HyperInteractive",
+      "auto.create": "true",
+      "name": "jdbc-sink"
+    },
+    "tasks": [],
+    "type": null
+  }
