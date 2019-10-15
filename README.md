@@ -65,11 +65,11 @@ First, we install a custom Kafka Connect service using Strimzi:
 *Note that you can further customize the Kafka Connect image to add more connectors. Use the [Strimzi instructions here][10] (doing this is a little tricky, [but this is a good tutorial][8] on how to do it).*
 
 Finally, configure and create an instance of the Sink connector by:
-* `curl https://raw.githubusercontent.com/dudash/openshift-omnisci-kafka/master/connector-sink-omnisci.json -o connector-sink-omnisci.json`
-* edit the `connector-sink-omnisci.json`
+* `curl https://raw.githubusercontent.com/dudash/openshift-omnisci-kafka/master/connector-sink-to-omnisci.json -o connector-sink-to-omnisci.json`
+* edit the `connector-sink-to-omnisci.json`
   * you need to set `connection.host` to the route for omnisci
   * as desired add additional topics to watch in the `topics` list
-* `curl -X POST -d @connector-sink-omnisci.json $CONNECT_URL/connectors -H "Content-Type: application/json"`
+* `curl -X POST -d @connector-sink-to-omnisci.json $CONNECT_URL/connectors -H "Content-Type: application/json"`
 
 ### Login to the OmniSci UI
 Open the route you exposed in the prior steps in a web browser. Let's make sure we can login. (You'll need your license key now if you are using Omnisci EE). If you forgot where it is, check the webconsole for exposed routes or run `oc get routes -n omnisci`.
